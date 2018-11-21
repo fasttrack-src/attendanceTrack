@@ -1,0 +1,30 @@
+<head>
+  <!--Needed to enable sending requests to another url-->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' {{config.allowedUrls}} data: ; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+</head>
+<body>
+  <ion-header>
+      <br/>
+    <ion-navbar>
+      <ion-title>
+        Tutorial Groups
+      </ion-title>
+      <ion-buttons end>
+        <button ion-button icon-only (click)="logOut()">
+          <ion-icon name="log-out"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+  <ion-content padding>
+    <ion-item *ngFor="let key of keys">
+      <ion-item-group>
+          <ion-item-divider color="light">{{ key }}</ion-item-divider>
+          <ion-item *ngFor="let group of groups[key]" (click)="goToGroupPage(group.course, group.id, group.courseId, group.name)">
+              {{ group.name }}
+          </ion-item>
+      </ion-item-group>
+    </ion-item>
+    <p><button *ngIf="login != 'admin'" ion-button color="primary" (click)="displayAllGroups()">All Tutorial Groups</button></p>
+  </ion-content>
+</body>

@@ -1,0 +1,19 @@
+{
+  "ios": {
+    "release": {
+	    "codeSignIdentity": "iPhone Distribution: University of Glasgow (B5JS8NF3ZN)",
+	    "developmentTeam": "B5JS8NF3ZN",
+	    "provisioningProfile": "26c4e00c-80a2-456d-b104-dbddd55f4c25",
+	    "packageType": "app-store"
+    }
+  },
+  "android": {
+    "release": {
+      "keystore": "/home/travis/build/fasttrack-src/attendanceTrack/signing/android/keystore.jks",
+      "alias": "tech@dcs.gla.ac.uk",
+      "keystoreType": "jks",
+      "storePassword": "",
+      "password" : ""
+    }
+  }
+}

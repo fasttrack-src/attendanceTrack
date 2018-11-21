@@ -1,0 +1,31 @@
+<head>
+  <!--Needed to enable sending requests to another url-->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' {{config.allowedUrls}} data: ; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+</head>
+<body>
+  <ion-header>
+      <br/>
+    <ion-navbar>
+      <ion-title>{{groupName}}</ion-title>
+      <ion-buttons end>
+        <button ion-button icon-only (click)="logOut()">
+          <ion-icon name="log-out"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+  <ion-content padding>
+      <p>
+        <button ion-button color="primary" (click)="scan()">Scan Barcode</button>
+      </p>
+      <ion-list>
+        <ion-item><ion-icon name="alert" item-end (click)="explainIcon()"></ion-icon></ion-item>
+        <ion-item (click)="presentActionSheet(item)" *ngFor="let item of students" [ngStyle]="{'background-color': item.attendedPastTwoWeeks || item.attendedToday ? '' : '#FF5C5C'}">
+          <ion-icon name="checkmark-circle" item-start *ngIf="item.attendedToday"></ion-icon>
+          <ion-icon name="radio-button-off" item-start *ngIf="!item.attendedToday"></ion-icon>
+          <ion-icon name="alert" item-end *ngIf="!(item.attendedPastTwoWeeks || item.attendedToday)"></ion-icon>
+          <ion-label>{{item.name}}</ion-label>
+        </ion-item>
+      </ion-list>
+  </ion-content>
+</body>

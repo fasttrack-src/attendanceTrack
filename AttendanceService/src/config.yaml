@@ -1,0 +1,8 @@
+---
+databaseUrl: jdbc:mysql://localhost:3306/longa_karen
+databaseUser: karen
+databasePassword: 0b_fusticat10N
+allowedOrigin: http://.*:8100,http://.*:8080
+ldapUrl: ad2.ad.dcs.gla.ac.uk
+ldapPort: 389
+adminPswdHash: ZGNzLmdsYS5hYy51aw==OyqIIctsp4T/EVstja0Qcw==

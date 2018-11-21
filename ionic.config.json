@@ -1,0 +1,7 @@
+{
+  "name": "attendanceMonitoring",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

@@ -1,0 +1,26 @@
+# Systemd unit file for tomcat 7.x
+[Unit]
+Description=Attendance Service
+After=syslog.target network.target
+
+[Service]
+Type=forking
+
+Environment=JAVA_HOME=/usr/lib/jvm/java-8-oracle
+Environment=CATALINA_PID=/home/ubuntu/tomcat7.pid
+Environment=CATALINA_HOME=/usr/share/tomcat7
+Environment=CATALINA_BASE=/var/lib/tomcat7
+Environment=CATALINA_OUT=/home/ubuntu/catalina.out
+Environment='JAVA_OPTS=-Djava.awt.headless=true -Dlog4j.configurationFile="/var/lib/tomcat7/webapps/WEB-INF/classes/log4j.properties"'
+
+ExecStart=/usr/share/tomcat7/bin/startup.sh
+ExecStop=/bin/kill -l5 $MAINPID
+PIDFile=/home/ubuntu/tomcat7.pid
+SuccessExitStatus=143
+
+User=ubuntu
+Group=ubuntu
+RestartSec=10
+Restart=always
+[Install]
+WantedBy=multi-user.target

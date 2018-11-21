@@ -1,0 +1,87 @@
+if: tag IS blank
+language: node_js
+node_js:
+  - 'node'
+matrix:
+  include:
+    -
+      sudo: required
+      os: osx
+      osx_image: xcode9.4
+      addons:
+        chrome: stable
+      before_script:
+        - 'export DISPLAY=:99.0'
+        - 'npm install -g cordova'
+        - 'npm install -g ionic'
+        - ./build-assets/ios/add-key.sh
+      script:
+        - 'npm test'
+        - 'ionic cordova build ios --prod --release --device'
+      after_script:
+        - ./build-assets/ios/remove-key.sh
+      before_deploy:
+        - 'zip -r ios-build.zip platforms/ios/build'
+        - 'git config --local user.name Marcell Pék'
+        - 'git config --local user.email 2333134p@student.gla.ac.uk'
+        - 'git tag "$(date +''%Y%m%d%H%M%S'')-$(git log --format=%h -1)"'
+      after_deploy:
+        - '/Applications/Xcode.app/Contents/Applications/Application\ Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Support/altool --upload-app -f "/Users/travis/build/marcellp/attendance/platforms/ios/build/device/AttendanceLTC.ipa" -u $APPSTORECONNECT_USER -p @env:APPSTORECONNECT_PASSWORD'
+      env:
+        - 'PROFILE_NAME="AttendanceLTC_CI_Build_Distribution_Profile"'
+    -
+      sudo: required
+      dist: trusty
+      addons:
+        chrome: stable
+      licenses:
+        - android-sdk-preview-license-.+
+        - android-sdk-license-.+
+        - google-gdk-license-.+
+      before_script:
+        - 'sudo chown root /opt/google/chrome/chrome-sandbox'
+        - 'sudo chmod 4755 /opt/google/chrome/chrome-sandbox'
+        - 'export DISPLAY=:99.0'
+        - 'sh -e /etc/init.d/xvfb start'
+        - 'sleep 3'
+        - 'npm install -g cordova'
+        - 'npm install -g ionic'
+        - 'sudo apt-get install -qq libstdc++6:i386 lib32z1 expect'
+        - 'curl -Ls https://raw.github.com/embarkmobile/android-sdk-installer/version-2/android-sdk-installer | bash /dev/stdin --install=build-tools-25.0.1,android-26,sysimg-17,extra-android-m2repository,extra-google-m2repository --accept=android-sdk-license-2742d1c5'
+        - 'source ~/.android-sdk-installer/env'
+        - 'jq --arg ANDROID_KEYSTORE_PASS "$ANDROID_KEYSTORE_PASS" ''.android.release.storePassword = $ANDROID_KEYSTORE_PASS | .android.release.password = $ANDROID_KEYSTORE_PASS'' build.json > build.json.tmp'
+        - 'mv build.json.tmp build.json'
+        - 'openssl aes-256-cbc -K $encrypted_896bfd344a78_key -iv $encrypted_896bfd344a78_iv -in signing/android/keystore.jks.enc -out signing/android/keystore.jks -d'
+      script:
+        - 'npm test'
+        - 'ionic cordova plugin add cordova-android-support-gradle-release  --variable ANDROID_SUPPORT_VERSION=26.+'
+        - 'ionic cordova build android --prod --release'
+        - 'cd AttendanceService'
+        - 'mvn install'
+      before_deploy:
+        - 'git config --local user.name Marcell Pék'
+        - 'git config --local user.email 2333134p@student.gla.ac.uk'
+        - 'git tag "$(date +''%Y%m%d%H%M%S'')-$(git log --format=%h -1)"'
+deploy:
+  -
+    provider: releases
+    api_key:
+      secure: RtTTJJYkjsxQUnC5iHqvQ9bFvdNdc2wYWzQvgSdY13RMF0ZvZDGLBKsF5ZHtOarIoW8XKTwsGHof1XqUbXKPx0l959GEA0+f7sovvvoUvfiXhmTTnZsZ/jvxKpVAV/p2Xgpt6pkDBJK5P/7a9j1VScasl44l2H3PP+JUSA7sClDXT8nSzvdPaZfGegu+2SQFjihQi7gSv8AMh5cV+C5t3DLfbeku5pDIGSuHQBueEk6ocS6n813ut7sNatMuqPTGwyjVYZXpsdF4tTbDqcMWxzWM7iYFuo3Fwx96+sgbefEmmllWo6VGP45LRe4B+mlI3ePsF7h9irdj7PeJsE1yg1nIVUa2hxoXX01oNkGYo0aSjqOUkxmMuAyyBSvjXQutrBb2jYWS1YedTmXmNRcA7XV68fxC3pHlkrUyd0d60lCobgsMsB2uqhc9TcC/zRbduVmeHlti9MBvWqqa9EmGpFpxKQ7pcWgzu5FQ4Hw5vQRztoyyDONclyhf6BQxMo2YADwr9GeWlKAUECwBnUgxXwq0zTT1ccOC4CtZMcUHY3nEsJzdnZmofTQzRNzweC3b3b9R3BnwMYtmosSBi+8gpuqRVGCSOZ4W6aabl8KX+dliGDnuYuRWRjMXtdPnEyT4PuDS7zfjtbfmHfkKHBFKqnnWY6SMdII07sZoIscxPmY=
+    file:
+      - /home/travis/.m2/repository/AttendanceService/AttendanceService/0.0.1-SNAPSHOT/AttendanceService-0.0.1-SNAPSHOT.war
+      - /home/travis/build/marcellp/attendance/platforms/android/build/outputs/apk/android-release.apk
+    skip_cleanup: true
+    on:
+      repo: marcellp/attendance
+      branch: master
+      condition: '$TRAVIS_OS_NAME = linux'
+  -
+    provider: releases
+    skip_cleanup: true
+    api_key:
+      secure: RtTTJJYkjsxQUnC5iHqvQ9bFvdNdc2wYWzQvgSdY13RMF0ZvZDGLBKsF5ZHtOarIoW8XKTwsGHof1XqUbXKPx0l959GEA0+f7sovvvoUvfiXhmTTnZsZ/jvxKpVAV/p2Xgpt6pkDBJK5P/7a9j1VScasl44l2H3PP+JUSA7sClDXT8nSzvdPaZfGegu+2SQFjihQi7gSv8AMh5cV+C5t3DLfbeku5pDIGSuHQBueEk6ocS6n813ut7sNatMuqPTGwyjVYZXpsdF4tTbDqcMWxzWM7iYFuo3Fwx96+sgbefEmmllWo6VGP45LRe4B+mlI3ePsF7h9irdj7PeJsE1yg1nIVUa2hxoXX01oNkGYo0aSjqOUkxmMuAyyBSvjXQutrBb2jYWS1YedTmXmNRcA7XV68fxC3pHlkrUyd0d60lCobgsMsB2uqhc9TcC/zRbduVmeHlti9MBvWqqa9EmGpFpxKQ7pcWgzu5FQ4Hw5vQRztoyyDONclyhf6BQxMo2YADwr9GeWlKAUECwBnUgxXwq0zTT1ccOC4CtZMcUHY3nEsJzdnZmofTQzRNzweC3b3b9R3BnwMYtmosSBi+8gpuqRVGCSOZ4W6aabl8KX+dliGDnuYuRWRjMXtdPnEyT4PuDS7zfjtbfmHfkKHBFKqnnWY6SMdII07sZoIscxPmY=
+    file: /Users/travis/build/marcellp/attendance/ios-build.zip
+    on:
+      repo: marcellp/attendance
+      branch: master
+      condition: '$TRAVIS_OS_NAME = osx'
