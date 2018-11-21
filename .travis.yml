@@ -53,17 +53,17 @@ matrix:
       = $ANDROID_KEYSTORE_PASS | .android.release.password = $ANDROID_KEYSTORE_PASS'
       build.json > build.json.tmp
     - mv build.json.tmp build.json
-    - openssl aes-256-cbc -K $encrypted_896bfd344a78_key -iv $encrypted_896bfd344a78_iv
+    - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
       -in signing/ios/AppleWWDRCA.cer.enc -out signing/ios/AppleWWDRCA.cer -d
-    - openssl aes-256-cbc -K $encrypted_896bfd344a78_key -iv $encrypted_896bfd344a78_iv
+    - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
       -in signing/ios/AttendanceLTC_CI_Build_Distribution_Profile.mobileprovision.enc
       -out signing/ios/AttendanceLTC_CI_Build_Distribution_Profile.mobileprovision
       -d
-    - openssl aes-256-cbc -K $encrypted_896bfd344a78_key -iv $encrypted_896bfd344a78_iv
+    - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
       -in signing/ios/dist.cer.enc -out signing/ios/dist.cer -d
-    - openssl aes-256-cbc -K $encrypted_896bfd344a78_key -iv $encrypted_896bfd344a78_iv
+    - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
       -in signing/ios/dist.p12.enc -out signing/ios/dist.p12 -d
-    - openssl aes-256-cbc -K $encrypted_896bfd344a78_key -iv $encrypted_896bfd344a78_iv
+    - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
       -in signing/android/release-key.jks.enc -out signing/android/release-key.jks
       -d
     script:
