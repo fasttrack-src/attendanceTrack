@@ -23,4 +23,4 @@ security set-key-partition-list -S apple-tool:,apple: -s -k travis ios-build.key
 
 # Put the provisioning profile in place
 mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-cp "./build-assets/ios/$PROFILE_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
+cp "./signing/ios/$PROFILE_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
