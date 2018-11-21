@@ -15,7 +15,7 @@ security set-keychain-settings -t 3600 -l ~/Library/Keychains/ios-build.keychain
 
 # Add certificates to keychain and allow codesign to access them
 security import ./signing/ios/AppleWWDRCA.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign
-security import ./signing/s/ios/dist.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign
+security import ./signing/ios/dist.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign
 security import ./signing/ios/dist.p12 -k ~/Library/Keychains/ios-build.keychain -P $ENCRYPTION_SECRET -T /usr/bin/codesign
 
 # Fix a bug that stalls code signing process
