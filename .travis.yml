@@ -13,12 +13,22 @@ matrix:
     - export DISPLAY=:99.0
     - npm install -g cordova
     - npm install -g ionic
-    - "./build-assets/ios/add-key.sh"
+    - "./signing/ios/add-key.sh"
+    - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
+      -in signing/ios/AppleWWDRCA.cer.enc -out signing/ios/AppleWWDRCA.cer -d
+    - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
+      -in signing/ios/AttendanceLTC_CI_Build_Distribution_Profile.mobileprovision.enc
+      -out signing/ios/AttendanceLTC_CI_Build_Distribution_Profile.mobileprovision
+      -d
+    - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
+      -in signing/ios/dist.cer.enc -out signing/ios/dist.cer -d
+    - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
+      -in signing/ios/dist.p12.enc -out signing/ios/dist.p12 -d
     script:
     - npm test
     - ionic cordova build ios --prod --release --device
     after_script:
-    - "./build-assets/ios/remove-key.sh"
+    - "./signing/ios/remove-key.sh"
     before_deploy:
     - zip -r ios-build.zip platforms/ios/build
     - git config --local user.name Marcell Pék
@@ -54,17 +64,7 @@ matrix:
       build.json > build.json.tmp
     - mv build.json.tmp build.json
     - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
-      -in signing/ios/AppleWWDRCA.cer.enc -out signing/ios/AppleWWDRCA.cer -d
-    - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
-      -in signing/ios/AttendanceLTC_CI_Build_Distribution_Profile.mobileprovision.enc
-      -out signing/ios/AttendanceLTC_CI_Build_Distribution_Profile.mobileprovision
-      -d
-    - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
-      -in signing/ios/dist.cer.enc -out signing/ios/dist.cer -d
-    - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
-      -in signing/ios/dist.p12.enc -out signing/ios/dist.p12 -d
-    - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
-      -in signing/android/release-key.jks.enc -out signing/android/release-key.jks
+      -in signing/android/keystore.jks.enc -out signing/android/keystore.jks
       -d
     script:
     - npm test
