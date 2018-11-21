@@ -13,7 +13,6 @@ matrix:
     - export DISPLAY=:99.0
     - npm install -g cordova
     - npm install -g ionic
-    - "./signing/ios/add-key.sh"
     - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
       -in signing/ios/AppleWWDRCA.cer.enc -out signing/ios/AppleWWDRCA.cer -d
     - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
@@ -24,6 +23,7 @@ matrix:
       -in signing/ios/dist.cer.enc -out signing/ios/dist.cer -d
     - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
       -in signing/ios/dist.p12.enc -out signing/ios/dist.p12 -d
+    - "./signing/ios/add-key.sh"
     script:
     - npm test
     - ionic cordova build ios --prod --release --device
