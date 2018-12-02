@@ -80,16 +80,16 @@ matrix:
     - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
   - sudo: required
     dist: bionic
-    language: node_js
-    node_js:
-    - node
+    language: java
     services:
     - mysql
+    before_script:
+    - apt-get update
     script:
     - cd AttendanceService
     - mvn install
-    - cd target
     after_script:
+    - cd target
     - rm -fr AttendanceService-0.0.1-SNAPSHOT
     - unzip AttendanceService-0.0.1-SNAPSHOT.war
     - cp ../src/config.yaml WEB-INF/classes/
