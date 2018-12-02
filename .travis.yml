@@ -80,7 +80,9 @@ matrix:
     - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
   - sudo: required
     dist: bionic
-    language: java
+    language: node_js
+    node_js:
+    - node
     services:
     - mysql
     script:
