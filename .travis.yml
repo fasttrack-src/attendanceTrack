@@ -1,14 +1,12 @@
 if: tag IS blank
-language: node_js
-node_js:
-- node
-services:
-- mysql
 matrix:
   include:
   - sudo: required
     os: osx
     osx_image: xcode9.4
+    language: node_js
+    node_js:
+    - node
     addons:
       chrome: stable
     before_script:
@@ -44,6 +42,9 @@ matrix:
     - PROFILE_NAME="AttendanceLTC_CI_Build_Distribution_Profile"
   - sudo: required
     dist: trusty
+    language: node_js
+    node_js:
+    - node
     addons:
       chrome: stable
     licenses:
@@ -79,12 +80,11 @@ matrix:
     - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
   - sudo: required
     dist: bionic
-    addons:
-      chrome: stable
-    licenses:
-    - android-sdk-preview-license-.+
-    - android-sdk-license-.+
-    - google-gdk-license-.+
+    language: java
+    jdk:
+    - oraclejdk8
+    services:
+    - mysql
     script:
     - cd AttendanceService
     - mvn install
