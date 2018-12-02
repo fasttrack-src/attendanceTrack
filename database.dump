@@ -1,0 +1,319 @@
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `barcodeproject` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+USE `barcodeproject`;
+
+--
+-- Table structure for table `academics`
+--
+
+DROP TABLE IF EXISTS `academics`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `academics` (
+  `id` int(12) NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL DEFAULT '',
+  `firstname` varchar(128) NOT NULL DEFAULT ' ',
+  `surname` varchar(64) NOT NULL DEFAULT '-',
+  `isacademic` int(11) NOT NULL DEFAULT '0',
+  `initials` varchar(10) DEFAULT NULL,
+  `canconvene` int(1) NOT NULL DEFAULT '0',
+  `email` varchar(64) NOT NULL DEFAULT '',
+  `special` char(1) NOT NULL DEFAULT 'N',
+  `external` varchar(1) NOT NULL DEFAULT 'N',
+  `admin` varchar(1) NOT NULL DEFAULT 'N',
+  `first` int(11) NOT NULL DEFAULT '0',
+  `second` int(11) NOT NULL DEFAULT '0',
+  `teaches` varchar(1) NOT NULL DEFAULT 'N',
+  `reminderadmin` varchar(1) NOT NULL DEFAULT 'N',
+  `otheremail` varchar(128) DEFAULT NULL,
+  `researchgroup` varchar(10) NOT NULL DEFAULT '-',
+  `hod` varchar(1) NOT NULL DEFAULT 'N',
+  `numoffers` int(11) NOT NULL DEFAULT '0',
+  `tc` int(11) NOT NULL DEFAULT '0',
+  `yearhead` varchar(2) NOT NULL DEFAULT '0',
+  `projects` int(11) NOT NULL DEFAULT '0',
+  `isactive` int(11) NOT NULL DEFAULT '1',
+  `target` int(11) NOT NULL DEFAULT '0',
+  `delta` float NOT NULL DEFAULT '0',
+  `askedip` int(11) NOT NULL DEFAULT '0',
+  `staffnumber` int(7) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=271 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `academics`
+--
+
+LOCK TABLES `academics` WRITE;
+/*!40000 ALTER TABLE `academics` DISABLE KEYS */;
+INSERT INTO `academics` VALUES (1,'Cutts,Q',' Quintin I','Cutts',1,'QIC',1,'quintin@dcs.gla.ac.uk','n','N','Y',0,1,'Y','N',NULL,'SE&IS','N',0,0,'0',0,1,8,0.5,1,151987);
+/*!40000 ALTER TABLE `academics` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+DROP TABLE IF EXISTS `assign`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `assign` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `academicid` int(11) NOT NULL DEFAULT '0',
+  `courseid` int(11) NOT NULL DEFAULT '0',
+  `role` varchar(10) NOT NULL DEFAULT 'main',
+  `sessionNumber` int(11) NOT NULL DEFAULT '17',
+  PRIMARY KEY (`id`),
+  KEY `FK_ASSIGN_ACADEMICID_idx` (`academicid`),
+  KEY `FK_ASSIGN_COURSEID_idx` (`courseid`),
+  CONSTRAINT `FK_ASSIGN_ACADEMICID` FOREIGN KEY (`academicid`) REFERENCES `academics` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_ASSIGN_COURSEID` FOREIGN KEY (`courseid`) REFERENCES `course` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=709 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `assign`
+--
+
+LOCK TABLES `assign` WRITE;
+/*!40000 ALTER TABLE `assign` DISABLE KEYS */;
+INSERT INTO `assign` VALUES (1,1,1,'main',18);
+/*!40000 ALTER TABLE `assign` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+DROP TABLE IF EXISTS `course`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `course` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(32) NOT NULL DEFAULT '',
+  `longname` varchar(256) NOT NULL,
+  `runswith` int(11) NOT NULL DEFAULT '0',
+  `startweek` int(11) NOT NULL DEFAULT '2',
+  `endweek` int(11) NOT NULL DEFAULT '11',
+  `semester` int(11) NOT NULL DEFAULT '1',
+  `runsboth` int(11) NOT NULL DEFAULT '0',
+  `mastersonly` int(11) NOT NULL DEFAULT '0',
+  `itcantake` int(11) NOT NULL DEFAULT '0',
+  `nolevel4` int(11) NOT NULL DEFAULT '0',
+  `onice` int(11) NOT NULL DEFAULT '0',
+  `credits` int(11) NOT NULL DEFAULT '10',
+  `booklist` longtext,
+  `booklistchecked` int(11) NOT NULL DEFAULT '0',
+  `nobid` int(11) NOT NULL DEFAULT '1',
+  `usescoursework` int(11) NOT NULL DEFAULT '0',
+  `allowbid` int(11) NOT NULL DEFAULT '0',
+  `socscourse` int(11) NOT NULL DEFAULT '1',
+  `year` varchar(2) NOT NULL DEFAULT '1',
+  `SIT` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=212 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `course`
+--
+
+LOCK TABLES `course` WRITE;
+/*!40000 ALTER TABLE `course` DISABLE KEYS */;
+INSERT INTO `course` VALUES (1,'CS1P','Programming 1',0,1,26,1,1,0,0,0,0,20,'',1,0,0,1,1,'1',0);
+/*!40000 ALTER TABLE `course` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+--
+-- Table structure for table `lectureattendance`
+--
+
+DROP TABLE IF EXISTS `lectureattendance`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `lectureattendance` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `barcode` varchar(20) NOT NULL,
+  `day` int(11) NOT NULL,
+  `month` int(11) NOT NULL,
+  `year` int(11) NOT NULL,
+  `hour` int(11) NOT NULL DEFAULT '0',
+  `minute` int(11) NOT NULL DEFAULT '0',
+  `course` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=59625 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `lectureattendance`
+--
+
+LOCK TABLES `lectureattendance` WRITE;
+/*!40000 ALTER TABLE `lectureattendance` DISABLE KEYS */;
+INSERT INTO `lectureattendance` VALUES (1,'20010011113025',11,10,2017,14,55,'CS1P');
+/*!40000 ALTER TABLE `lectureattendance` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+DROP TABLE IF EXISTS `undergrad`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `undergrad` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `login` varchar(11) NOT NULL,
+  `name` varchar(256) NOT NULL,
+  `email` varchar(548) NOT NULL DEFAULT ' ',
+  `barcode` varchar(20) NOT NULL DEFAULT ' ',
+  `year` varchar(4) NOT NULL DEFAULT '-',
+  `dateloaded` varchar(12) NOT NULL DEFAULT '-',
+  `team` varchar(2) NOT NULL DEFAULT '-',
+  `cohort` varchar(10) NOT NULL DEFAULT 'SOCS',
+  `tier4` int(11) NOT NULL DEFAULT '0',
+  `degree` varchar(128) NOT NULL DEFAULT '-',
+  `plan` varchar(10) NOT NULL,
+  `adviser` int(11) NOT NULL DEFAULT '0',
+  `advisername` varchar(64) NOT NULL DEFAULT '-',
+  `nationality` varchar(256) NOT NULL DEFAULT 'United Kingdom',
+  `active` int(11) NOT NULL DEFAULT '1',
+  `parttime` int(11) NOT NULL DEFAULT '0',
+  `canprogress` varchar(11) NOT NULL DEFAULT 'N',
+  `randomstring` varchar(12) DEFAULT NULL,
+  `alertlogins` int(11) NOT NULL DEFAULT '0',
+  `alertbadlogins` int(11) NOT NULL DEFAULT '0',
+  `alertforgotten` int(11) NOT NULL DEFAULT '0',
+  `override` int(1) DEFAULT '0' COMMENT 'flags if we have altered the year or active fields - intended to inform the Java code not to update the active or year fileds when comparing to MyCampus feed.  Should reset to 0 end of academic session.',
+  `adviseremail` varchar(45) DEFAULT NULL,
+  `canresit` bit(1) DEFAULT b'1' COMMENT 'no resit in hons, or a student may be refused a resit where found guilty of some rule infraction at first sitting',
+  `undergradcol` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `undergrad`
+--
+
+LOCK TABLES `undergrad` WRITE;
+/*!40000 ALTER TABLE `undergrad` DISABLE KEYS */;
+INSERT INTO `undergrad` VALUES (1, '1102499K', 'Kurkiewicz, Adam', '1102499K@student.gla.ac.uk', '28057722922042', '04', '17/9/2013', '', 'SOCS', '0', 'Comp Sci & Mathematics,MSci', 'GG4C-2207', '0', 'Chief Adviser', 'Poland', '0', '0', '1', 'xxxxxxx', '0', '0', '0', '0', NULL, 1, NULL);
+INSERT INTO `undergrad` VALUES (2, '2030458B', 'Babukova, Iva', '2030458B@student.gla.ac.uk', '28057722922042', '04', '17/9/2013', '', 'SOCS', '0', 'Comp Sci & Mathematics,MSci', 'GG4C-2207', '0', 'Chief Adviser', 'Poland <- not really', '0', '0', '1', 'xxxxxxx', '0', '0', '0', '0', NULL, 1, NULL);
+/*!40000 ALTER TABLE `undergrad` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+--
+-- Table structure for table `takescourse`
+--
+
+DROP TABLE IF EXISTS `takescourse`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `takescourse` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `examid` int(11) NOT NULL,
+  `undergradid` int(11) NOT NULL,
+  `courseid` int(11) NOT NULL,
+  `tutorialgroupid` int(11) NOT NULL DEFAULT '0',
+  `checkbit` int(11) NOT NULL DEFAULT '0',
+  `finalband` varchar(2) NOT NULL DEFAULT '-',
+  `adjustedband` varchar(2) NOT NULL DEFAULT '-',
+  `session` int(11) NOT NULL DEFAULT '14',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `takescourse`
+--
+
+LOCK TABLES `takescourse` WRITE;
+/*!40000 ALTER TABLE `takescourse` DISABLE KEYS */;
+/*!40000 ALTER TABLE `takescourse` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+DROP TABLE IF EXISTS `tutor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tutor` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `login` varchar(20) NOT NULL DEFAULT '-',
+  `name` varchar(120) NOT NULL,
+  `email` varchar(265) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=133 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tutor`
+--
+
+LOCK TABLES `tutor` WRITE;
+/*!40000 ALTER TABLE `tutor` DISABLE KEYS */;
+INSERT INTO `tutor` VALUES (1,'adamk','Adam Kurkiewicz','email@email.com');
+UNLOCK TABLES;
+
+
+
+
+DROP TABLE IF EXISTS `tutorassign`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tutorassign` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tutorid` int(11) NOT NULL DEFAULT '0',
+  `academicid` int(11) NOT NULL DEFAULT '0',
+  `tutorialgroupid` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=333 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tutorassign`
+--
+
+LOCK TABLES `tutorassign` WRITE;
+/*!40000 ALTER TABLE `tutorassign` DISABLE KEYS */;
+INSERT INTO `tutorassign` VALUES (1,1,1,1);
+/*!40000 ALTER TABLE `tutorassign` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tutorialgroup`
+--
+
+
+
+DROP TABLE IF EXISTS `tutorialgroup`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tutorialgroup` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `year` int(11) NOT NULL,
+  `courseid` int(11) NOT NULL,
+  `groupname` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=258 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tutorialgroup`
+--
+
+LOCK TABLES `tutorialgroup` WRITE;
+/*!40000 ALTER TABLE `tutorialgroup` DISABLE KEYS */;
+INSERT INTO `tutorialgroup` VALUES (1,1,1,'LB01');
+/*!40000 ALTER TABLE `tutorialgroup` ENABLE KEYS */;
+UNLOCK TABLES;

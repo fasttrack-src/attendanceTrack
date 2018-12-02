@@ -58,3 +58,10 @@ signing/*/*
 !signing/*/*.enc
 !signing/*/*.sh
 
+# For back-end development with an IDE other than Eclipse
+.project
+target
+.factorypath
+AttendanceService/.settings/org.eclipse.jdt.core.prefs
+AttendanceService/.settings/org.eclipse.jdt.apt.core.prefs
+

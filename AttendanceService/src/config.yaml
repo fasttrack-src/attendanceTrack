@@ -1,7 +1,7 @@
 ---
-databaseUrl: jdbc:mysql://localhost:3306/longa_karen
-databaseUser: karen
-databasePassword: 0b_fusticat10N
+databaseUrl: jdbc:mysql://localhost:3306/barcodeproject
+databaseUser: picrin
+databasePassword: password
 allowedOrigin: http://.*:8100,http://.*:8080
 ldapUrl: ad2.ad.dcs.gla.ac.uk
 ldapPort: 389

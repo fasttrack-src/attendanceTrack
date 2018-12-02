@@ -2,6 +2,8 @@ if: tag IS blank
 language: node_js
 node_js:
 - node
+services:
+- mysql
 matrix:
   include:
   - sudo: required
@@ -31,8 +33,8 @@ matrix:
     - "./signing/ios/remove-key.sh"
     before_deploy:
     - zip -r ios-build.zip platforms/ios/build
-    - git config --local user.name Marcell Pék
-    - git config --local user.email 2333134p@student.gla.ac.uk
+    - git config --local user.name Travis CI
+    - git config --local user.email travis-ci@travis-ci.org
     - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
     after_deploy:
     - /Applications/Xcode.app/Contents/Applications/Application\ Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Support/altool
@@ -71,12 +73,36 @@ matrix:
     - ionic cordova plugin add cordova-android-support-gradle-release  --variable
       ANDROID_SUPPORT_VERSION=26.+
     - ionic cordova build android --prod --release
+    before_deploy:
+    - git config --local user.name Travis CI
+    - git config --local user.email travis-ci@travis-ci.org
+    - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+  - sudo: required
+    dist: bionic
+    addons:
+      chrome: stable
+    licenses:
+    - android-sdk-preview-license-.+
+    - android-sdk-license-.+
+    - google-gdk-license-.+
+    script:
     - cd AttendanceService
     - mvn install
-    before_deploy:
-    - git config --local user.name Marcell Pék
-    - git config --local user.email 2333134p@student.gla.ac.uk
-    - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+    - cd target
+    after_script:
+    - rm -fr AttendanceService-0.0.1-SNAPSHOT
+    - unzip AttendanceService-0.0.1-SNAPSHOT.war
+    - cp ../src/config.yaml WEB-INF/classes/
+    - zip -r AttendanceService.war WEB-INF META-INF
+    - pwd
+    - sudo apt-get install tomcat8 --yes
+    - sudo rm -fr /var/lib/tomcat8/webapps/ROOT
+    - sudo cp AttendanceService.war /var/lib/tomcat8/webapps/ROOT.war
+    - echo "GRANT ALL PRIVILEGES ON *.* TO 'picrin'@'localhost' IDENTIFIED BY 'password';" | sudo mysql -u root
+    - cd ../..
+    - mysql -u picrin --password=password < database.dump
+    - sleep 10
+    - bash integration_test.bash
 deploy:
   -
     provider: releases
