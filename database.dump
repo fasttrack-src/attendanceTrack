@@ -252,6 +252,7 @@ CREATE TABLE `tutor` (
   `login` varchar(20) NOT NULL DEFAULT '-',
   `name` varchar(120) NOT NULL,
   `email` varchar(265) NOT NULL,
+  `undergrad` int(1) DEFAULT '0' COMMENT 'set to 1 if tutor is an undergraduate. if a tutor is marked as undergraduate, they can only record attendance data for courses they are assigned',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=133 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
