@@ -263,7 +263,8 @@ CREATE TABLE `tutor` (
 
 LOCK TABLES `tutor` WRITE;
 /*!40000 ALTER TABLE `tutor` DISABLE KEYS */;
-INSERT INTO `tutor` VALUES (1,'adamk','Adam Kurkiewicz','email@email.com');
+INSERT INTO `tutor` VALUES (1,'adamk','Adam Kurkiewicz','email@email.com',0);
+INSERT INTO `tutor` VALUES (2,'marcellp','Marcell Pek','email@email.com',1);
 UNLOCK TABLES;
 
 
@@ -288,6 +289,7 @@ CREATE TABLE `tutorassign` (
 LOCK TABLES `tutorassign` WRITE;
 /*!40000 ALTER TABLE `tutorassign` DISABLE KEYS */;
 INSERT INTO `tutorassign` VALUES (1,1,1,1);
+INSERT INTO `tutorassign` VALUES (2,2,1,1);
 /*!40000 ALTER TABLE `tutorassign` ENABLE KEYS */;
 UNLOCK TABLES;
 
