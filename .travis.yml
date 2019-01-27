@@ -60,12 +60,9 @@ matrix:
     - npm install -g cordova
     - npm install -g ionic
     - sudo apt-get install -qq libstdc++6:i386 lib32z1 expect
-    - curl -Ls https://raw.github.com/embarkmobile/android-sdk-installer/version-2/android-sdk-installer | bash /dev/stdin --install=build-tools-25.0.1,android-26,sysimg-17,extra-android-m2repository,extra-google-m2repository --accept=android-sdk-license-2742d1c5
+    - curl -Ls https://raw.github.com/embarkmobile/android-sdk-installer/version-2/android-sdk-installer | bash /dev/stdin --install=build-tools-25.0.1,android-26,sysimg-17,extra-android-m2repository,extra-google-m2repository
+    - yes | sdkmanager --licenses
     - source ~/.android-sdk-installer/env
-    - echo $PATH
-    - android list sdk --all
-    - android update sdk -u -a -t 19
-    - android update sdk -u -a -t 20
     - jq --arg ANDROID_KEYSTORE_PASS "$ANDROID_KEYSTORE_PASS" '.android.release.storePassword
       = $ANDROID_KEYSTORE_PASS | .android.release.password = $ANDROID_KEYSTORE_PASS'
       build.json > build.json.tmp
