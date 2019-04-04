@@ -88,6 +88,10 @@ matrix:
     - git config --local user.name Travis CI
     - git config --local user.email travis-ci@travis-ci.org
     - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+    - openssl enc -aes256 -base64 -k $SECRET_ENCRYPTION_PASS
+      -in /home/travis/build/marcellp/attendance/platforms/android/build/outputs/apk/android-release.apk
+      -out /home/travis/build/marcellp/attendance/platforms/android/build/outputs/apk/android-release.apk.enc
+
   - sudo: required
     dist: bionic
     language: java
@@ -119,11 +123,11 @@ deploy:
     api_key:
       secure: aaaJbBPWJBpJRhuPRCjGR1/nFNNJX325d74QxOcQvVLps5c7SjefRzAmk5yJZA1RVaaIL1ZK5hfr34UauHaxKp9tQ2oiZC6W5ORGvDlH6khd3Nj4zptRn0j/LKgjGOdZLpyR3FY2o/BgadfsTbrbeAVeDYmh639/j+l7uDRWeXseiQ/PnyHtBP9VaPsZdz4lO9t4vJjbBYxzAQiopqZwf3wRkUL6xRaJqFPCWVu8SKLfINpmtRH/Qco9Xe1IzewyNMBtAWSlEE8SbKGHb6vJmebepgRYbMMLpsws6fbfNxuBWmRlyPTxgwCFbsUC8lHmRbXz2qjY+aY1qlWnD2uWc8adMt0Ok81Qq+AQuGY/4JxX54UX+VYhyKrCbSjrzKQVMMoP3pDlhv3xzXbxYUbV1JQCZ+5mVhsmeAGY5/Dkb9vxODi33iXBJG+oz1sfWAm97gB/PvWitH/A0XbP3kUwgZ0Rypl5qBZx/ti6CK8NIGIrxA5sfpY/PdLxRsFfuq33yH/NWsGuEa36SLMOd8DcwjssT+Dw5AnTeCOjOuxiPTTLUuIlBY4juG7VmKw5HHLg7f6e3Xlm2SET3lTZIUyp3JHtXbG5a8cEWtXVwU7y+LGYxeMea75Bj4BjiYRf+xCecrnZ7z4L/+VCWVDTh+SfFGn7HCN53Cn+bkANAGgIu5mK/s=
     file:
-      - /home/travis/.m2/repository/AttendanceService/AttendanceService/0.0.1-SNAPSHOT/AttendanceService-0.0.1-SNAPSHOT.war
-      - /home/travis/build/marcellp/attendance/platforms/android/build/outputs/apk/android-release.apk
+      #- /home/travis/.m2/repository/AttendanceService/AttendanceService/0.0.1-SNAPSHOT/AttendanceService-0.0.1-SNAPSHOT.war
+      - /home/travis/build/marcellp/attendance/platforms/android/build/outputs/apk/android-release.apk.enc
     skip_cleanup: true
     on:
-      repo: marcellp/attendance
+      repo: fasttrack-src/attendanceTrack
       branch: master
       condition: '$TRAVIS_OS_NAME = linux'
   -
